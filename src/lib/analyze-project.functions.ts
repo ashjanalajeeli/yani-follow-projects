@@ -93,7 +93,7 @@ ${docExcerpts ? `UPLOADED DOCUMENTS:\n${docExcerpts}` : ""}`;
     await supabase
       .from("projects")
       .update({
-        analysis,
+        analysis: analysis as unknown as Record<string, unknown>,
         project_type: analysis.project_type,
         complexity: analysis.complexity,
         tech_stack: analysis.tech_stack,
