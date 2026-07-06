@@ -14,16 +14,507 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_log: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          meta: Json | null
+          project_id: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          meta?: Json | null
+          project_id: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          meta?: Json | null
+          project_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      checklists: {
+        Row: {
+          done: boolean
+          id: string
+          item: string
+          order_index: number
+          stage_id: string
+        }
+        Insert: {
+          done?: boolean
+          id?: string
+          item: string
+          order_index?: number
+          stage_id: string
+        }
+        Update: {
+          done?: boolean
+          id?: string
+          item?: string
+          order_index?: number
+          stage_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklists_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          link: string | null
+          read: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read?: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read?: boolean
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      project_files: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string | null
+          mime: string | null
+          name: string
+          parsed_text: string | null
+          project_id: string
+          size: number | null
+          storage_path: string
+          task_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind?: string | null
+          mime?: string | null
+          name: string
+          parsed_text?: string | null
+          project_id: string
+          size?: number | null
+          storage_path: string
+          task_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string | null
+          mime?: string | null
+          name?: string
+          parsed_text?: string | null
+          project_id?: string
+          size?: number | null
+          storage_path?: string
+          task_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_files_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_files_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          analysis: Json | null
+          complexity: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          estimated_cost: number | null
+          estimated_hours: number | null
+          generation_status: string
+          health: string
+          id: string
+          idea_text: string | null
+          name: string
+          owner_id: string
+          priority: string
+          progress: number
+          project_type: string | null
+          start_date: string | null
+          status: string
+          tech_stack: Json | null
+          updated_at: string
+        }
+        Insert: {
+          analysis?: Json | null
+          complexity?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          estimated_cost?: number | null
+          estimated_hours?: number | null
+          generation_status?: string
+          health?: string
+          id?: string
+          idea_text?: string | null
+          name: string
+          owner_id: string
+          priority?: string
+          progress?: number
+          project_type?: string | null
+          start_date?: string | null
+          status?: string
+          tech_stack?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          analysis?: Json | null
+          complexity?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          estimated_cost?: number | null
+          estimated_hours?: number | null
+          generation_status?: string
+          health?: string
+          id?: string
+          idea_text?: string | null
+          name?: string
+          owner_id?: string
+          priority?: string
+          progress?: number
+          project_type?: string | null
+          start_date?: string | null
+          status?: string
+          tech_stack?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      stages: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          key: string
+          name: string
+          order_index: number
+          progress: number
+          project_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          key: string
+          name: string
+          order_index?: number
+          progress?: number
+          project_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          key?: string
+          name?: string
+          order_index?: number
+          progress?: number
+          project_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subtasks: {
+        Row: {
+          created_at: string
+          done: boolean
+          id: string
+          order_index: number
+          task_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          done?: boolean
+          id?: string
+          order_index?: number
+          task_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          done?: boolean
+          id?: string
+          order_index?: number
+          task_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subtasks_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      task_prompts: {
+        Row: {
+          id: string
+          prompt_text: string
+          target: string
+          task_id: string
+        }
+        Insert: {
+          id?: string
+          prompt_text: string
+          target: string
+          task_id: string
+        }
+        Update: {
+          id?: string
+          prompt_text?: string
+          target?: string
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_prompts_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      task_tools: {
+        Row: {
+          category: string | null
+          id: string
+          task_id: string
+          tool_name: string
+          url: string | null
+          why: string | null
+        }
+        Insert: {
+          category?: string | null
+          id?: string
+          task_id: string
+          tool_name: string
+          url?: string | null
+          why?: string | null
+        }
+        Update: {
+          category?: string | null
+          id?: string
+          task_id?: string
+          tool_name?: string
+          url?: string | null
+          why?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_tools_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          actual_hours: number | null
+          completed: boolean
+          created_at: string
+          dependencies: string[] | null
+          description: string | null
+          difficulty: string
+          due_date: string | null
+          estimated_hours: number | null
+          expected_output: string | null
+          id: string
+          learning_notes: Json | null
+          order_index: number
+          priority: string
+          project_id: string
+          stage_id: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          actual_hours?: number | null
+          completed?: boolean
+          created_at?: string
+          dependencies?: string[] | null
+          description?: string | null
+          difficulty?: string
+          due_date?: string | null
+          estimated_hours?: number | null
+          expected_output?: string | null
+          id?: string
+          learning_notes?: Json | null
+          order_index?: number
+          priority?: string
+          project_id: string
+          stage_id?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          actual_hours?: number | null
+          completed?: boolean
+          created_at?: string
+          dependencies?: string[] | null
+          description?: string | null
+          difficulty?: string
+          due_date?: string | null
+          estimated_hours?: number | null
+          expected_output?: string | null
+          id?: string
+          learning_notes?: Json | null
+          order_index?: number
+          priority?: string
+          project_id?: string
+          stage_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "member"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +641,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "member"],
+    },
   },
 } as const
