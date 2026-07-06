@@ -12,9 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects.index'
 import { Route as AuthenticatedProjectsNewRouteImport } from './routes/_authenticated/projects.new'
+import { Route as AuthenticatedProjectsIdRouteImport } from './routes/_authenticated/projects.$id'
+import { Route as AuthenticatedProjectsIdIndexRouteImport } from './routes/_authenticated/projects.$id.index'
+import { Route as AuthenticatedProjectsIdRoadmapRouteImport } from './routes/_authenticated/projects.$id.roadmap'
+import { Route as AuthenticatedProjectsIdKanbanRouteImport } from './routes/_authenticated/projects.$id.kanban'
+import { Route as AuthenticatedProjectsIdFilesRouteImport } from './routes/_authenticated/projects.$id.files'
+import { Route as AuthenticatedProjectsIdChecklistRouteImport } from './routes/_authenticated/projects.$id.checklist'
+import { Route as AuthenticatedProjectsIdTasksTaskIdRouteImport } from './routes/_authenticated/projects.$id.tasks.$taskId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -29,6 +37,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
@@ -47,20 +60,76 @@ const AuthenticatedProjectsNewRoute =
     path: '/projects/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProjectsIdRoute = AuthenticatedProjectsIdRouteImport.update({
+  id: '/projects/$id',
+  path: '/projects/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProjectsIdIndexRoute =
+  AuthenticatedProjectsIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedProjectsIdRoute,
+  } as any)
+const AuthenticatedProjectsIdRoadmapRoute =
+  AuthenticatedProjectsIdRoadmapRouteImport.update({
+    id: '/roadmap',
+    path: '/roadmap',
+    getParentRoute: () => AuthenticatedProjectsIdRoute,
+  } as any)
+const AuthenticatedProjectsIdKanbanRoute =
+  AuthenticatedProjectsIdKanbanRouteImport.update({
+    id: '/kanban',
+    path: '/kanban',
+    getParentRoute: () => AuthenticatedProjectsIdRoute,
+  } as any)
+const AuthenticatedProjectsIdFilesRoute =
+  AuthenticatedProjectsIdFilesRouteImport.update({
+    id: '/files',
+    path: '/files',
+    getParentRoute: () => AuthenticatedProjectsIdRoute,
+  } as any)
+const AuthenticatedProjectsIdChecklistRoute =
+  AuthenticatedProjectsIdChecklistRouteImport.update({
+    id: '/checklist',
+    path: '/checklist',
+    getParentRoute: () => AuthenticatedProjectsIdRoute,
+  } as any)
+const AuthenticatedProjectsIdTasksTaskIdRoute =
+  AuthenticatedProjectsIdTasksTaskIdRouteImport.update({
+    id: '/tasks/$taskId',
+    path: '/tasks/$taskId',
+    getParentRoute: () => AuthenticatedProjectsIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/projects/$id': typeof AuthenticatedProjectsIdRouteWithChildren
   '/projects/new': typeof AuthenticatedProjectsNewRoute
   '/projects/': typeof AuthenticatedProjectsIndexRoute
+  '/projects/$id/checklist': typeof AuthenticatedProjectsIdChecklistRoute
+  '/projects/$id/files': typeof AuthenticatedProjectsIdFilesRoute
+  '/projects/$id/kanban': typeof AuthenticatedProjectsIdKanbanRoute
+  '/projects/$id/roadmap': typeof AuthenticatedProjectsIdRoadmapRoute
+  '/projects/$id/': typeof AuthenticatedProjectsIdIndexRoute
+  '/projects/$id/tasks/$taskId': typeof AuthenticatedProjectsIdTasksTaskIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/projects/new': typeof AuthenticatedProjectsNewRoute
   '/projects': typeof AuthenticatedProjectsIndexRoute
+  '/projects/$id/checklist': typeof AuthenticatedProjectsIdChecklistRoute
+  '/projects/$id/files': typeof AuthenticatedProjectsIdFilesRoute
+  '/projects/$id/kanban': typeof AuthenticatedProjectsIdKanbanRoute
+  '/projects/$id/roadmap': typeof AuthenticatedProjectsIdRoadmapRoute
+  '/projects/$id': typeof AuthenticatedProjectsIdIndexRoute
+  '/projects/$id/tasks/$taskId': typeof AuthenticatedProjectsIdTasksTaskIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,22 +137,63 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/projects/$id': typeof AuthenticatedProjectsIdRouteWithChildren
   '/_authenticated/projects/new': typeof AuthenticatedProjectsNewRoute
   '/_authenticated/projects/': typeof AuthenticatedProjectsIndexRoute
+  '/_authenticated/projects/$id/checklist': typeof AuthenticatedProjectsIdChecklistRoute
+  '/_authenticated/projects/$id/files': typeof AuthenticatedProjectsIdFilesRoute
+  '/_authenticated/projects/$id/kanban': typeof AuthenticatedProjectsIdKanbanRoute
+  '/_authenticated/projects/$id/roadmap': typeof AuthenticatedProjectsIdRoadmapRoute
+  '/_authenticated/projects/$id/': typeof AuthenticatedProjectsIdIndexRoute
+  '/_authenticated/projects/$id/tasks/$taskId': typeof AuthenticatedProjectsIdTasksTaskIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/projects/new' | '/projects/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/settings'
+    | '/projects/$id'
+    | '/projects/new'
+    | '/projects/'
+    | '/projects/$id/checklist'
+    | '/projects/$id/files'
+    | '/projects/$id/kanban'
+    | '/projects/$id/roadmap'
+    | '/projects/$id/'
+    | '/projects/$id/tasks/$taskId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/projects/new' | '/projects'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/settings'
+    | '/projects/new'
+    | '/projects'
+    | '/projects/$id/checklist'
+    | '/projects/$id/files'
+    | '/projects/$id/kanban'
+    | '/projects/$id/roadmap'
+    | '/projects/$id'
+    | '/projects/$id/tasks/$taskId'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/settings'
+    | '/_authenticated/projects/$id'
     | '/_authenticated/projects/new'
     | '/_authenticated/projects/'
+    | '/_authenticated/projects/$id/checklist'
+    | '/_authenticated/projects/$id/files'
+    | '/_authenticated/projects/$id/kanban'
+    | '/_authenticated/projects/$id/roadmap'
+    | '/_authenticated/projects/$id/'
+    | '/_authenticated/projects/$id/tasks/$taskId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -115,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -136,17 +253,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/projects/$id': {
+      id: '/_authenticated/projects/$id'
+      path: '/projects/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof AuthenticatedProjectsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/projects/$id/': {
+      id: '/_authenticated/projects/$id/'
+      path: '/'
+      fullPath: '/projects/$id/'
+      preLoaderRoute: typeof AuthenticatedProjectsIdIndexRouteImport
+      parentRoute: typeof AuthenticatedProjectsIdRoute
+    }
+    '/_authenticated/projects/$id/roadmap': {
+      id: '/_authenticated/projects/$id/roadmap'
+      path: '/roadmap'
+      fullPath: '/projects/$id/roadmap'
+      preLoaderRoute: typeof AuthenticatedProjectsIdRoadmapRouteImport
+      parentRoute: typeof AuthenticatedProjectsIdRoute
+    }
+    '/_authenticated/projects/$id/kanban': {
+      id: '/_authenticated/projects/$id/kanban'
+      path: '/kanban'
+      fullPath: '/projects/$id/kanban'
+      preLoaderRoute: typeof AuthenticatedProjectsIdKanbanRouteImport
+      parentRoute: typeof AuthenticatedProjectsIdRoute
+    }
+    '/_authenticated/projects/$id/files': {
+      id: '/_authenticated/projects/$id/files'
+      path: '/files'
+      fullPath: '/projects/$id/files'
+      preLoaderRoute: typeof AuthenticatedProjectsIdFilesRouteImport
+      parentRoute: typeof AuthenticatedProjectsIdRoute
+    }
+    '/_authenticated/projects/$id/checklist': {
+      id: '/_authenticated/projects/$id/checklist'
+      path: '/checklist'
+      fullPath: '/projects/$id/checklist'
+      preLoaderRoute: typeof AuthenticatedProjectsIdChecklistRouteImport
+      parentRoute: typeof AuthenticatedProjectsIdRoute
+    }
+    '/_authenticated/projects/$id/tasks/$taskId': {
+      id: '/_authenticated/projects/$id/tasks/$taskId'
+      path: '/tasks/$taskId'
+      fullPath: '/projects/$id/tasks/$taskId'
+      preLoaderRoute: typeof AuthenticatedProjectsIdTasksTaskIdRouteImport
+      parentRoute: typeof AuthenticatedProjectsIdRoute
+    }
   }
 }
 
+interface AuthenticatedProjectsIdRouteChildren {
+  AuthenticatedProjectsIdChecklistRoute: typeof AuthenticatedProjectsIdChecklistRoute
+  AuthenticatedProjectsIdFilesRoute: typeof AuthenticatedProjectsIdFilesRoute
+  AuthenticatedProjectsIdKanbanRoute: typeof AuthenticatedProjectsIdKanbanRoute
+  AuthenticatedProjectsIdRoadmapRoute: typeof AuthenticatedProjectsIdRoadmapRoute
+  AuthenticatedProjectsIdIndexRoute: typeof AuthenticatedProjectsIdIndexRoute
+  AuthenticatedProjectsIdTasksTaskIdRoute: typeof AuthenticatedProjectsIdTasksTaskIdRoute
+}
+
+const AuthenticatedProjectsIdRouteChildren: AuthenticatedProjectsIdRouteChildren =
+  {
+    AuthenticatedProjectsIdChecklistRoute:
+      AuthenticatedProjectsIdChecklistRoute,
+    AuthenticatedProjectsIdFilesRoute: AuthenticatedProjectsIdFilesRoute,
+    AuthenticatedProjectsIdKanbanRoute: AuthenticatedProjectsIdKanbanRoute,
+    AuthenticatedProjectsIdRoadmapRoute: AuthenticatedProjectsIdRoadmapRoute,
+    AuthenticatedProjectsIdIndexRoute: AuthenticatedProjectsIdIndexRoute,
+    AuthenticatedProjectsIdTasksTaskIdRoute:
+      AuthenticatedProjectsIdTasksTaskIdRoute,
+  }
+
+const AuthenticatedProjectsIdRouteWithChildren =
+  AuthenticatedProjectsIdRoute._addFileChildren(
+    AuthenticatedProjectsIdRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedProjectsIdRoute: typeof AuthenticatedProjectsIdRouteWithChildren
   AuthenticatedProjectsNewRoute: typeof AuthenticatedProjectsNewRoute
   AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedProjectsIdRoute: AuthenticatedProjectsIdRouteWithChildren,
   AuthenticatedProjectsNewRoute: AuthenticatedProjectsNewRoute,
   AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
 }

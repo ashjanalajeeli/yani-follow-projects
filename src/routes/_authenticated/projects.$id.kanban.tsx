@@ -27,7 +27,7 @@ function Kanban() {
 
   const move = useMutation({
     mutationFn: async ({ taskId, status }: { taskId: string; status: string }) => {
-      const patch: Record<string, unknown> = { status };
+      const patch: { status: string; completed?: boolean } = { status };
       if (status === "done") patch.completed = true;
       const { error } = await supabase.from("tasks").update(patch).eq("id", taskId);
       if (error) throw error;
