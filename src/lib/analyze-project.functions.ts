@@ -97,7 +97,7 @@ ${docExcerpts ? `UPLOADED DOCUMENTS:\n${docExcerpts}` : ""}`;
         tech_stack: JSON.parse(JSON.stringify(analysis.tech_stack)),
         project_type: analysis.project_type,
         complexity: analysis.complexity,
-        tech_stack: analysis.tech_stack,
+        
         estimated_hours: analysis.estimated_hours,
         estimated_cost: analysis.estimated_cost_usd,
         generation_status: "roadmap",
