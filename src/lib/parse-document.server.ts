@@ -6,7 +6,7 @@ export async function parseDocument(buffer: ArrayBuffer, mime: string, name: str
       const { extractText, getDocumentProxy } = await import("unpdf");
       const pdf = await getDocumentProxy(new Uint8Array(buffer));
       const { text } = await extractText(pdf, { mergePages: true });
-      return typeof text === "string" ? text : text.join("\n");
+      return Array.isArray(text) ? (text as string[]).join("\n") : String(text ?? "");
     }
     if (mime.includes("word") || lower.endsWith(".docx")) {
       const mammoth = await import("mammoth");
