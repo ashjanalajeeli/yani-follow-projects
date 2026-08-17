@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+const BASE_URL = "https://freeflow-projects.lovable.app";
+
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
@@ -13,7 +15,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
           ...entries.map(
             (e) =>
-              `  <url><loc>${e.path}</loc><changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`,
+              `  <url><loc>${BASE_URL}${e.path}</loc><changefreq>${e.changefreq}</changefreq><priority>${e.priority}</priority></url>`,
           ),
           `</urlset>`,
         ].join("\n");
