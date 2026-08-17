@@ -1,6 +1,6 @@
 # FreePM
 
-> AI project management for software developers and agencies. Turn any idea or brief into a complete roadmap: stages, tasks, subtasks, free-tool recommendations and ready-to-use AI prompts.
+> Turn any idea or brief into a full AI roadmap: stages, tasks, subtasks, free tool picks and ready-to-use AI prompts. Free forever.
 
 ## Pages
 - [Home](/): Product overview, features, and sign-up call to action.
