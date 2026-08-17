@@ -75,18 +75,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FreePM — AI Project Management for Developers" },
+      { title: "FreePM — Free AI Project Management for Devs" },
       {
         name: "description",
         content:
-          "Turn any project idea into a full AI-generated roadmap with tasks, subtasks, free-tool picks and AI prompts. Free forever.",
+          "Turn any idea or brief into a full AI roadmap: stages, tasks, subtasks, free tool picks and ready-to-use AI prompts. Free forever.",
       },
       { name: "author", content: "FreePM" },
-      { property: "og:title", content: "FreePM — AI Project Management for Developers" },
+      { property: "og:title", content: "FreePM — Free AI Project Management for Devs" },
       {
         property: "og:description",
         content:
-          "AI-powered project manager for dev agencies and freelancers. Roadmaps, tasks, tools, prompts — all free.",
+          "Turn any idea or brief into a full AI roadmap: stages, tasks, subtasks, free tool picks and ready-to-use AI prompts. Free forever.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
