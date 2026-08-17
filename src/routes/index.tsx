@@ -2,7 +2,24 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Rocket, ListChecks, Wand2, GitBranch, FileStack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const SITE = "https://freeflow-projects.lovable.app";
+const HOME_TITLE = "Yani — Free AI Project Management for Devs";
+const HOME_DESC =
+  "Turn any idea or brief into a full AI roadmap: stages, tasks, subtasks, free tool picks and ready-to-use AI prompts. Free forever.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: HOME_TITLE },
+      { name: "description", content: HOME_DESC },
+      { property: "og:title", content: HOME_TITLE },
+      { property: "og:description", content: HOME_DESC },
+      { property: "og:url", content: `${SITE}/` },
+      { property: "og:image", content: `${SITE}/og-image.jpg` },
+      { name: "twitter:image", content: `${SITE}/og-image.jpg` },
+    ],
+    links: [{ rel: "canonical", href: `${SITE}/` }],
+  }),
   component: Landing,
 });
 
