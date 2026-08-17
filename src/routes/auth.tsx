@@ -12,8 +12,8 @@ import { Sparkles } from "lucide-react";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — FreePM" },
-      { name: "description", content: "Sign in to FreePM to build AI-generated project roadmaps." },
+      { title: "Sign in — Yani" },
+      { name: "description", content: "Sign in to Yani to build AI-generated project roadmaps." },
     ],
   }),
   component: AuthPage,

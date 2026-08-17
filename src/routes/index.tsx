@@ -16,7 +16,7 @@ function Landing() {
             <div className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground">
               <Sparkles className="size-4" />
             </div>
-            FreePM
+            Yani
           </Link>
           <nav className="flex items-center gap-2">
             <Link to="/auth">
@@ -38,7 +38,7 @@ function Landing() {
           Turn any idea into a <span className="gradient-text">complete roadmap</span> in seconds.
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          Drop in a brief or upload a proposal. FreePM analyzes the project, generates
+          Drop in a brief or upload a proposal. Yani analyzes the project, generates
           stages, tasks, subtasks, and AI prompts — with free tools recommended for every step.
         </p>
         <div className="mt-8 flex justify-center gap-3">

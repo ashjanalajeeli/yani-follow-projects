@@ -34,7 +34,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground">
             <Sparkles className="size-4" />
           </div>
-          FreePM
+          Yani
         </div>
 
         <div className="p-3">
@@ -80,7 +80,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground">
               <Sparkles className="size-4" />
             </div>
-            FreePM
+            Yani
           </Link>
           <Button variant="ghost" size="sm" onClick={signOut}>
             <LogOut className="size-4" />

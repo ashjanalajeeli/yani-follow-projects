@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, FolderKanban } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/projects/")({
-  head: () => ({ meta: [{ title: "Projects — FreePM" }] }),
+  head: () => ({ meta: [{ title: "Projects — Yani" }] }),
   component: ProjectsList,
 });
 

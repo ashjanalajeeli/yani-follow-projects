@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { FolderKanban, Plus, CheckCircle2, Clock, AlertTriangle, Rocket } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — FreePM" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Yani" }] }),
   component: Dashboard,
 });
 

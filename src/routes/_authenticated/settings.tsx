@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Moon, Sun } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({ meta: [{ title: "Settings — FreePM" }] }),
+  head: () => ({ meta: [{ title: "Settings — Yani" }] }),
   component: SettingsPage,
 });
 
