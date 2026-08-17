@@ -13,7 +13,7 @@ import { parseAndAttach } from "@/lib/parse-document.functions";
 import { analyzeProject } from "@/lib/analyze-project.functions";
 
 export const Route = createFileRoute("/_authenticated/projects/new")({
-  head: () => ({ meta: [{ title: "New project — FreePM" }] }),
+  head: () => ({ meta: [{ title: "New project — Yani" }] }),
   component: NewProject,
 });
 

@@ -1,4 +1,4 @@
-# FreePM
+# Yani
 
 > Turn any idea or brief into a full AI roadmap: stages, tasks, subtasks, free tool picks and ready-to-use AI prompts. Free forever.
 
