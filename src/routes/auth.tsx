@@ -9,12 +9,22 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 
+const SITE = "https://freeflow-projects.lovable.app";
+const AUTH_TITLE = "Sign in — Yani";
+const AUTH_DESC = "Sign in to Yani to build AI-generated project roadmaps.";
+
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Yani" },
-      { name: "description", content: "Sign in to Yani to build AI-generated project roadmaps." },
+      { title: AUTH_TITLE },
+      { name: "description", content: AUTH_DESC },
+      { property: "og:title", content: AUTH_TITLE },
+      { property: "og:description", content: AUTH_DESC },
+      { property: "og:url", content: `${SITE}/auth` },
+      { property: "og:image", content: `${SITE}/og-image.jpg` },
+      { name: "twitter:image", content: `${SITE}/og-image.jpg` },
     ],
+    links: [{ rel: "canonical", href: `${SITE}/auth` }],
   }),
   component: AuthPage,
 });
