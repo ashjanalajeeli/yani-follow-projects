@@ -9,29 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AuthRouteImport } from './routes/auth'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects.index'
-import { Route as AuthenticatedProjectsIdRouteImport } from './routes/_authenticated/projects.$id'
 import { Route as AuthenticatedProjectsNewRouteImport } from './routes/_authenticated/projects.new'
+import { Route as AuthenticatedProjectsIdRouteImport } from './routes/_authenticated/projects.$id'
 import { Route as AuthenticatedProjectsIdIndexRouteImport } from './routes/_authenticated/projects.$id.index'
-import { Route as AuthenticatedProjectsIdChecklistRouteImport } from './routes/_authenticated/projects.$id.checklist'
-import { Route as AuthenticatedProjectsIdFilesRouteImport } from './routes/_authenticated/projects.$id.files'
-import { Route as AuthenticatedProjectsIdKanbanRouteImport } from './routes/_authenticated/projects.$id.kanban'
 import { Route as AuthenticatedProjectsIdRoadmapRouteImport } from './routes/_authenticated/projects.$id.roadmap'
+import { Route as AuthenticatedProjectsIdKanbanRouteImport } from './routes/_authenticated/projects.$id.kanban'
+import { Route as AuthenticatedProjectsIdFilesRouteImport } from './routes/_authenticated/projects.$id.files'
+import { Route as AuthenticatedProjectsIdChecklistRouteImport } from './routes/_authenticated/projects.$id.checklist'
 import { Route as AuthenticatedProjectsIdTasksTaskIdRouteImport } from './routes/_authenticated/projects.$id.tasks.$taskId'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -39,19 +35,23 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedProjectsIndexRoute =
@@ -60,33 +60,27 @@ const AuthenticatedProjectsIndexRoute =
     path: '/projects/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedProjectsIdRoute = AuthenticatedProjectsIdRouteImport.update({
-  id: '/projects/$id',
-  path: '/projects/$id',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedProjectsNewRoute =
   AuthenticatedProjectsNewRouteImport.update({
     id: '/projects/new',
     path: '/projects/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProjectsIdRoute = AuthenticatedProjectsIdRouteImport.update({
+  id: '/projects/$id',
+  path: '/projects/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProjectsIdIndexRoute =
   AuthenticatedProjectsIdIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedProjectsIdRoute,
   } as any)
-const AuthenticatedProjectsIdChecklistRoute =
-  AuthenticatedProjectsIdChecklistRouteImport.update({
-    id: '/checklist',
-    path: '/checklist',
-    getParentRoute: () => AuthenticatedProjectsIdRoute,
-  } as any)
-const AuthenticatedProjectsIdFilesRoute =
-  AuthenticatedProjectsIdFilesRouteImport.update({
-    id: '/files',
-    path: '/files',
+const AuthenticatedProjectsIdRoadmapRoute =
+  AuthenticatedProjectsIdRoadmapRouteImport.update({
+    id: '/roadmap',
+    path: '/roadmap',
     getParentRoute: () => AuthenticatedProjectsIdRoute,
   } as any)
 const AuthenticatedProjectsIdKanbanRoute =
@@ -95,10 +89,16 @@ const AuthenticatedProjectsIdKanbanRoute =
     path: '/kanban',
     getParentRoute: () => AuthenticatedProjectsIdRoute,
   } as any)
-const AuthenticatedProjectsIdRoadmapRoute =
-  AuthenticatedProjectsIdRoadmapRouteImport.update({
-    id: '/roadmap',
-    path: '/roadmap',
+const AuthenticatedProjectsIdFilesRoute =
+  AuthenticatedProjectsIdFilesRouteImport.update({
+    id: '/files',
+    path: '/files',
+    getParentRoute: () => AuthenticatedProjectsIdRoute,
+  } as any)
+const AuthenticatedProjectsIdChecklistRoute =
+  AuthenticatedProjectsIdChecklistRouteImport.update({
+    id: '/checklist',
+    path: '/checklist',
     getParentRoute: () => AuthenticatedProjectsIdRoute,
   } as any)
 const AuthenticatedProjectsIdTasksTaskIdRoute =
@@ -217,18 +217,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -238,25 +231,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/projects/': {
@@ -266,18 +266,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/projects/$id': {
-      id: '/_authenticated/projects/$id'
-      path: '/projects/$id'
-      fullPath: '/projects/$id'
-      preLoaderRoute: typeof AuthenticatedProjectsIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/projects/new': {
       id: '/_authenticated/projects/new'
       path: '/projects/new'
       fullPath: '/projects/new'
       preLoaderRoute: typeof AuthenticatedProjectsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/projects/$id': {
+      id: '/_authenticated/projects/$id'
+      path: '/projects/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof AuthenticatedProjectsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/projects/$id/': {
@@ -287,18 +287,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsIdIndexRouteImport
       parentRoute: typeof AuthenticatedProjectsIdRoute
     }
-    '/_authenticated/projects/$id/checklist': {
-      id: '/_authenticated/projects/$id/checklist'
-      path: '/checklist'
-      fullPath: '/projects/$id/checklist'
-      preLoaderRoute: typeof AuthenticatedProjectsIdChecklistRouteImport
-      parentRoute: typeof AuthenticatedProjectsIdRoute
-    }
-    '/_authenticated/projects/$id/files': {
-      id: '/_authenticated/projects/$id/files'
-      path: '/files'
-      fullPath: '/projects/$id/files'
-      preLoaderRoute: typeof AuthenticatedProjectsIdFilesRouteImport
+    '/_authenticated/projects/$id/roadmap': {
+      id: '/_authenticated/projects/$id/roadmap'
+      path: '/roadmap'
+      fullPath: '/projects/$id/roadmap'
+      preLoaderRoute: typeof AuthenticatedProjectsIdRoadmapRouteImport
       parentRoute: typeof AuthenticatedProjectsIdRoute
     }
     '/_authenticated/projects/$id/kanban': {
@@ -308,11 +301,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsIdKanbanRouteImport
       parentRoute: typeof AuthenticatedProjectsIdRoute
     }
-    '/_authenticated/projects/$id/roadmap': {
-      id: '/_authenticated/projects/$id/roadmap'
-      path: '/roadmap'
-      fullPath: '/projects/$id/roadmap'
-      preLoaderRoute: typeof AuthenticatedProjectsIdRoadmapRouteImport
+    '/_authenticated/projects/$id/files': {
+      id: '/_authenticated/projects/$id/files'
+      path: '/files'
+      fullPath: '/projects/$id/files'
+      preLoaderRoute: typeof AuthenticatedProjectsIdFilesRouteImport
+      parentRoute: typeof AuthenticatedProjectsIdRoute
+    }
+    '/_authenticated/projects/$id/checklist': {
+      id: '/_authenticated/projects/$id/checklist'
+      path: '/checklist'
+      fullPath: '/projects/$id/checklist'
+      preLoaderRoute: typeof AuthenticatedProjectsIdChecklistRouteImport
       parentRoute: typeof AuthenticatedProjectsIdRoute
     }
     '/_authenticated/projects/$id/tasks/$taskId': {
