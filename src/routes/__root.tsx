@@ -82,6 +82,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Turn any idea or brief into a full AI roadmap: stages, tasks, subtasks, free tool picks and ready-to-use AI prompts. Free forever.",
       },
       { name: "author", content: "Yani" },
+      {
+        name: "google-site-verification",
+        content: "7MzAHd-rxN9UIT2cIHUJiJ_82EBOXcO7NKVNJl6gebc",
+      },
       { property: "og:title", content: "Yani — Free AI Project Management for Devs" },
       {
         property: "og:description",
