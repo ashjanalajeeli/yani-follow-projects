@@ -10,6 +10,16 @@ import { ArrowLeft, Copy, ExternalLink, GraduationCap } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/tasks/$taskId")({
+  head: () => ({
+    meta: [
+      { title: "Task details — Yani" },
+      {
+        name: "description",
+        content:
+          "Task detail with subtasks, free tool recommendations, AI prompts and learning resources.",
+      },
+    ],
+  }),
   component: TaskDetail,
 });
 

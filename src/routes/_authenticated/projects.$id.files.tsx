@@ -7,6 +7,16 @@ import { Upload, FileText, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/files")({
+  head: () => ({
+    meta: [
+      { title: "Project files — Yani" },
+      {
+        name: "description",
+        content:
+          "Briefs, documents and attachments uploaded to your project for AI analysis.",
+      },
+    ],
+  }),
   component: FilesPage,
 });
 
