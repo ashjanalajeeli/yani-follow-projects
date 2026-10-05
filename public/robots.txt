@@ -3,4 +3,4 @@ Allow: /
 Disallow: /_authenticated
 Disallow: /auth
 
-Sitemap: /sitemap.xml
+Sitemap: https://freeflow-projects.lovable.app/sitemap.xml
