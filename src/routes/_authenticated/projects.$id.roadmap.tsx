@@ -7,6 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/roadmap")({
+  head: () => ({
+    meta: [
+      { title: "Project roadmap — Yani" },
+      {
+        name: "description",
+        content:
+          "AI-generated roadmap for your project: stages, tasks and subtasks with progress tracking.",
+      },
+    ],
+  }),
   component: Roadmap,
 });
 

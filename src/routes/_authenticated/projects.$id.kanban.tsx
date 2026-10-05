@@ -6,6 +6,16 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/kanban")({
+  head: () => ({
+    meta: [
+      { title: "Project kanban board — Yani" },
+      {
+        name: "description",
+        content:
+          "Kanban board for your project: move tasks across todo, in progress, review and done.",
+      },
+    ],
+  }),
   component: Kanban,
 });
 

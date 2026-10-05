@@ -5,6 +5,16 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/checklist")({
+  head: () => ({
+    meta: [
+      { title: "Project checklists — Yani" },
+      {
+        name: "description",
+        content:
+          "Launch and quality checklists for your project, generated from the AI analysis.",
+      },
+    ],
+  }),
   component: ChecklistPage,
 });
 

@@ -5,6 +5,16 @@ import { Card } from "@/components/ui/card";
 import { AlertTriangle, CheckCircle2, Clock, DollarSign, Zap } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/")({
+  head: () => ({
+    meta: [
+      { title: "Project overview — Yani" },
+      {
+        name: "description",
+        content:
+          "AI analysis of your project: type, complexity, tech stack, architecture, risks, timeline and cost estimates.",
+      },
+    ],
+  }),
   component: Overview,
 });
 
