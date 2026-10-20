@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_authenticated/projects/$id/checklist")({
       { name: "description", content: "Launch and quality checklists for your project, generated from the AI analysis." },
       { property: "og:title", content: "Project checklists — Yani" },
       { property: "og:description", content: "Launch and quality checklists for your project, generated from the AI analysis." },
-      { property: "og:url", content: `https://freeflow-projects.lovable.app/projects/${params.id}/checklist` },
+      { property: "og:url", content: `https://yani-follow-projects.lovable.app/projects/${params.id}/checklist` },
     ],
   }),
   component: ChecklistPage,

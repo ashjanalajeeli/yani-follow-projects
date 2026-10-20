@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 
-const SITE = "https://freeflow-projects.lovable.app";
+const SITE = "https://yani-follow-projects.lovable.app";
 const AUTH_TITLE = "Sign in — Yani";
 const AUTH_DESC = "Sign in to Yani to build AI-generated project roadmaps.";
 
