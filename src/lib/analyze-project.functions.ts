@@ -236,7 +236,7 @@ function buildPrompt(
   const base = `Project: ${projectName}\nTask: ${taskTitle}\n\nContext: ${taskDescription}\n\nExpected output: ${expected}`;
   switch (target) {
     case "cursor":
-    case "lovable":
+    case "yani":
     case "replit":
       return `You are pair-programming inside ${target}. Implement the task below step by step. Ask before making destructive changes.\n\n${base}\n\nDeliverables:\n- Code that compiles\n- Short summary of what you changed\n- Tests where relevant`;
     case "figma":

@@ -294,7 +294,7 @@ Prompt for Cursor
 
 Prompt for Replit
 
-Prompt for Lovable
+Prompt for Yani
 
 Prompt for Figma Make
 
@@ -615,18 +615,6 @@ The application should feel like a combination of:
 but completely FREE and powered by AI.
 
 Before generating any code, first generate the complete project structure, database schema, folder organization, roadmap, and execution plan. Do not start implementation until the planning phase is 100% complete."
-
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://yani-follow-projects.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/63d8b1e5-02e8-4778-9911-1154dffea14d).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 

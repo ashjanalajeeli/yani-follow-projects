@@ -23,7 +23,7 @@ export const PROMPT_TARGETS = [
   "gemini",
   "cursor",
   "replit",
-  "lovable",
+  "yani",
   "figma",
 ] as const;
 export type PromptTarget = (typeof PROMPT_TARGETS)[number];

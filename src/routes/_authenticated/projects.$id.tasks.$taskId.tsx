@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/projects/$id/tasks/$taskId
       { name: "description", content: "Task detail with subtasks, free tool recommendations, AI prompts and learning resources." },
       { property: "og:title", content: "Task details — Yani" },
       { property: "og:description", content: "Task detail with subtasks, free tool recommendations, AI prompts and learning resources." },
-      { property: "og:url", content: `https://yani-follow-projects.lovable.app/projects/${params.id}/tasks/${params.taskId}` },
+      { property: "og:url", content: `https://yani-follow-projects.yani.app/projects/${params.id}/tasks/${params.taskId}` },
     ],
   }),
   component: TaskDetail,

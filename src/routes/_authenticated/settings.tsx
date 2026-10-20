@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/settings")({
       { name: "description", content: "Manage your account, theme and preferences." },
       { property: "og:title", content: "Settings — Yani" },
       { property: "og:description", content: "Manage your account, theme and preferences." },
-      { property: "og:url", content: "https://yani-follow-projects.lovable.app/settings" },
+      { property: "og:url", content: "https://yani-follow-projects.yani.app/settings" },
     ],
   }),
   component: SettingsPage,

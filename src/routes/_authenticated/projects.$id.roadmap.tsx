@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_authenticated/projects/$id/roadmap")({
       { name: "description", content: "AI-generated roadmap for your project: stages, tasks and subtasks with progress tracking." },
       { property: "og:title", content: "Project roadmap — Yani" },
       { property: "og:description", content: "AI-generated roadmap for your project: stages, tasks and subtasks with progress tracking." },
-      { property: "og:url", content: `https://yani-follow-projects.lovable.app/projects/${params.id}/roadmap` },
+      { property: "og:url", content: `https://yani-follow-projects.yani.app/projects/${params.id}/roadmap` },
     ],
   }),
   component: Roadmap,

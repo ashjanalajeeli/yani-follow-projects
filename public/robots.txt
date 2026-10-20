@@ -3,4 +3,4 @@ Allow: /
 Disallow: /_authenticated
 Disallow: /auth
 
-Sitemap: https://yani-follow-projects.lovable.app/sitemap.xml
+Sitemap: /sitemap.xml

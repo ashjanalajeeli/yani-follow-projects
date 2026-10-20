@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_authenticated/projects/$id/")({
       { name: "description", content: "AI analysis of your project: type, complexity, tech stack, architecture, risks, timeline and cost estimates." },
       { property: "og:title", content: "Project overview — Yani" },
       { property: "og:description", content: "AI analysis of your project: type, complexity, tech stack, architecture, risks, timeline and cost estimates." },
-      { property: "og:url", content: `https://yani-follow-projects.lovable.app/projects/${params.id}` },
+      { property: "og:url", content: `https://yani-follow-projects.yani.app/projects/${params.id}` },
     ],
   }),
   component: Overview,

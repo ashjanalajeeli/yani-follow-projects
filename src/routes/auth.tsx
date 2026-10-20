@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 
-const SITE = "https://yani-follow-projects.lovable.app";
+const SITE = "https://yani-follow-projects.yani.app";
 const AUTH_TITLE = "Sign in — Yani";
 const AUTH_DESC = "Sign in to Yani to build AI-generated project roadmaps.";
 
@@ -74,11 +73,11 @@ function AuthPage() {
   async function handleGoogle() {
     setBusy(true);
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/dashboard` },
       });
-      if (result.error) throw result.error;
-      if (!result.redirected) navigate({ to: "/dashboard" });
+      if (error) throw error;
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Google sign-in failed");
       setBusy(false);

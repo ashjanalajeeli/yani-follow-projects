@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       { name: "description", content: "Your projects at a glance: progress, active tasks and recent activity." },
       { property: "og:title", content: "Dashboard — Yani" },
       { property: "og:description", content: "Your projects at a glance: progress, active tasks and recent activity." },
-      { property: "og:url", content: "https://yani-follow-projects.lovable.app/dashboard" },
+      { property: "og:url", content: "https://yani-follow-projects.yani.app/dashboard" },
     ],
   }),
   component: Dashboard,

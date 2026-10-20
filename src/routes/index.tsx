@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Rocket, ListChecks, Wand2, GitBranch, FileStack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const SITE = "https://yani-follow-projects.lovable.app";
+const SITE = "https://yani-follow-projects.yani.app";
 const HOME_TITLE = "Yani — Free AI Project Management for Devs";
 const HOME_DESC =
   "Turn any idea or brief into a full AI roadmap: stages, tasks, subtasks, free tool picks and ready-to-use AI prompts. Free forever.";
@@ -98,7 +98,7 @@ const FEATURES = [
   { icon: Wand2, title: "AI Project Analysis", body: "Detects project type, tech stack, risks, and effort — from your idea or docs." },
   { icon: GitBranch, title: "Smart Roadmap", body: "13 stages from Planning to Maintenance, each with realistic tasks and dependencies." },
   { icon: ListChecks, title: "Micro Tasks & Subtasks", body: "Every task broken into steps you can knock out one at a time." },
-  { icon: Sparkles, title: "AI Prompts Per Task", body: "Prompts ready for ChatGPT, Claude, Gemini, Cursor, Replit, Lovable and Figma Make." },
+  { icon: Sparkles, title: "AI Prompts Per Task", body: "Prompts ready for ChatGPT, Claude, Gemini, Cursor, Replit, Yani and Figma Make." },
   { icon: FileStack, title: "Free Tool Picks", body: "Curated free tools for design, backend, hosting, testing — no upsell." },
   { icon: Rocket, title: "Kanban & Timeline", body: "Track progress with a live Kanban board, weekly timeline and health signals." },
 ];

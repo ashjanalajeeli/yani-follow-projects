@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const BASE_URL = "https://yani-follow-projects.lovable.app";
+const BASE_URL = "https://yani-follow-projects.yani.app";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
