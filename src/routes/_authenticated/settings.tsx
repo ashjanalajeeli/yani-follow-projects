@@ -9,7 +9,15 @@ import { toast } from "sonner";
 import { Moon, Sun } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({ meta: [{ title: "Settings — Yani" }] }),
+  head: () => ({
+    meta: [
+      { title: "Settings — Yani" },
+      { name: "description", content: "Manage your account, theme and preferences." },
+      { property: "og:title", content: "Settings — Yani" },
+      { property: "og:description", content: "Manage your account, theme and preferences." },
+      { property: "og:url", content: "https://freeflow-projects.lovable.app/settings" },
+    ],
+  }),
   component: SettingsPage,
 });
 

@@ -8,7 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { FolderKanban, Plus, CheckCircle2, Clock, AlertTriangle, Rocket } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — Yani" }] }),
+  head: () => ({
+    meta: [
+      { title: "Dashboard — Yani" },
+      { name: "description", content: "Your projects at a glance: progress, active tasks and recent activity." },
+      { property: "og:title", content: "Dashboard — Yani" },
+      { property: "og:description", content: "Your projects at a glance: progress, active tasks and recent activity." },
+      { property: "og:url", content: "https://freeflow-projects.lovable.app/dashboard" },
+    ],
+  }),
   component: Dashboard,
 });
 

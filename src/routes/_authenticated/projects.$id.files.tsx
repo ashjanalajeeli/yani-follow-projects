@@ -7,14 +7,13 @@ import { Upload, FileText, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/files")({
-  head: () => ({
+  head: ({ params }) => ({
     meta: [
       { title: "Project files — Yani" },
-      {
-        name: "description",
-        content:
-          "Briefs, documents and attachments uploaded to your project for AI analysis.",
-      },
+      { name: "description", content: "Briefs, documents and attachments uploaded to your project for AI analysis." },
+      { property: "og:title", content: "Project files — Yani" },
+      { property: "og:description", content: "Briefs, documents and attachments uploaded to your project for AI analysis." },
+      { property: "og:url", content: `https://freeflow-projects.lovable.app/projects/${params.id}/files` },
     ],
   }),
   component: FilesPage,

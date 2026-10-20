@@ -13,7 +13,15 @@ import { parseAndAttach } from "@/lib/parse-document.functions";
 import { analyzeProject } from "@/lib/analyze-project.functions";
 
 export const Route = createFileRoute("/_authenticated/projects/new")({
-  head: () => ({ meta: [{ title: "New project — Yani" }] }),
+  head: () => ({
+    meta: [
+      { title: "New project — Yani" },
+      { name: "description", content: "Describe an idea or upload a brief and get a full AI roadmap in minutes." },
+      { property: "og:title", content: "New project — Yani" },
+      { property: "og:description", content: "Describe an idea or upload a brief and get a full AI roadmap in minutes." },
+      { property: "og:url", content: "https://freeflow-projects.lovable.app/projects/new" },
+    ],
+  }),
   component: NewProject,
 });
 

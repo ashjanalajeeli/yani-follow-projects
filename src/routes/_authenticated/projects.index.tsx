@@ -8,7 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, FolderKanban } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/projects/")({
-  head: () => ({ meta: [{ title: "Projects — Yani" }] }),
+  head: () => ({
+    meta: [
+      { title: "Projects — Yani" },
+      { name: "description", content: "Browse and manage all your AI-planned software projects." },
+      { property: "og:title", content: "Projects — Yani" },
+      { property: "og:description", content: "Browse and manage all your AI-planned software projects." },
+      { property: "og:url", content: "https://freeflow-projects.lovable.app/projects" },
+    ],
+  }),
   component: ProjectsList,
 });
 

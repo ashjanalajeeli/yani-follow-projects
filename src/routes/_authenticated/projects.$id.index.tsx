@@ -5,14 +5,13 @@ import { Card } from "@/components/ui/card";
 import { AlertTriangle, CheckCircle2, Clock, DollarSign, Zap } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/")({
-  head: () => ({
+  head: ({ params }) => ({
     meta: [
       { title: "Project overview — Yani" },
-      {
-        name: "description",
-        content:
-          "AI analysis of your project: type, complexity, tech stack, architecture, risks, timeline and cost estimates.",
-      },
+      { name: "description", content: "AI analysis of your project: type, complexity, tech stack, architecture, risks, timeline and cost estimates." },
+      { property: "og:title", content: "Project overview — Yani" },
+      { property: "og:description", content: "AI analysis of your project: type, complexity, tech stack, architecture, risks, timeline and cost estimates." },
+      { property: "og:url", content: `https://freeflow-projects.lovable.app/projects/${params.id}` },
     ],
   }),
   component: Overview,
