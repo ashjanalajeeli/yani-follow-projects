@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_authenticated/projects/$id/files")({
       { name: "description", content: "Briefs, documents and attachments uploaded to your project for AI analysis." },
       { property: "og:title", content: "Project files — Yani" },
       { property: "og:description", content: "Briefs, documents and attachments uploaded to your project for AI analysis." },
-      { property: "og:url", content: `https://freeflow-projects.lovable.app/projects/${params.id}/files` },
+      { property: "og:url", content: `https://yani-follow-projects.lovable.app/projects/${params.id}/files` },
     ],
   }),
   component: FilesPage,

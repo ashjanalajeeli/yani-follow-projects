@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/projects/$id/kanban")({
       { name: "description", content: "Kanban board for your project: move tasks across todo, in progress, review and done." },
       { property: "og:title", content: "Project kanban board — Yani" },
       { property: "og:description", content: "Kanban board for your project: move tasks across todo, in progress, review and done." },
-      { property: "og:url", content: `https://freeflow-projects.lovable.app/projects/${params.id}/kanban` },
+      { property: "og:url", content: `https://yani-follow-projects.lovable.app/projects/${params.id}/kanban` },
     ],
   }),
   component: Kanban,
