@@ -10,14 +10,13 @@ import { ArrowLeft, Copy, ExternalLink, GraduationCap } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/tasks/$taskId")({
-  head: () => ({
+  head: ({ params }) => ({
     meta: [
       { title: "Task details — Yani" },
-      {
-        name: "description",
-        content:
-          "Task detail with subtasks, free tool recommendations, AI prompts and learning resources.",
-      },
+      { name: "description", content: "Task detail with subtasks, free tool recommendations, AI prompts and learning resources." },
+      { property: "og:title", content: "Task details — Yani" },
+      { property: "og:description", content: "Task detail with subtasks, free tool recommendations, AI prompts and learning resources." },
+      { property: "og:url", content: `https://freeflow-projects.lovable.app/projects/${params.id}/tasks/${params.taskId}` },
     ],
   }),
   component: TaskDetail,

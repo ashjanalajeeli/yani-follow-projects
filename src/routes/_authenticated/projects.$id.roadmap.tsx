@@ -7,14 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/roadmap")({
-  head: () => ({
+  head: ({ params }) => ({
     meta: [
       { title: "Project roadmap — Yani" },
-      {
-        name: "description",
-        content:
-          "AI-generated roadmap for your project: stages, tasks and subtasks with progress tracking.",
-      },
+      { name: "description", content: "AI-generated roadmap for your project: stages, tasks and subtasks with progress tracking." },
+      { property: "og:title", content: "Project roadmap — Yani" },
+      { property: "og:description", content: "AI-generated roadmap for your project: stages, tasks and subtasks with progress tracking." },
+      { property: "og:url", content: `https://freeflow-projects.lovable.app/projects/${params.id}/roadmap` },
     ],
   }),
   component: Roadmap,

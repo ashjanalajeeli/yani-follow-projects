@@ -5,14 +5,13 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/checklist")({
-  head: () => ({
+  head: ({ params }) => ({
     meta: [
       { title: "Project checklists — Yani" },
-      {
-        name: "description",
-        content:
-          "Launch and quality checklists for your project, generated from the AI analysis.",
-      },
+      { name: "description", content: "Launch and quality checklists for your project, generated from the AI analysis." },
+      { property: "og:title", content: "Project checklists — Yani" },
+      { property: "og:description", content: "Launch and quality checklists for your project, generated from the AI analysis." },
+      { property: "og:url", content: `https://freeflow-projects.lovable.app/projects/${params.id}/checklist` },
     ],
   }),
   component: ChecklistPage,
