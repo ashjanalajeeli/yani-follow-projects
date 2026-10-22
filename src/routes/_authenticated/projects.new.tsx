@@ -14,6 +14,7 @@ import { analyzeProject } from "@/lib/analyze-project.functions";
 import {
   getSupportedFileType,
   MAX_FILES_PER_BATCH,
+  safeStorageFileName,
   validateProjectFile,
 } from "@/lib/file-validation";
 
@@ -88,7 +89,7 @@ function NewProject() {
       // Upload + parse each file
       for (const [i, f] of files.entries()) {
         setBusyLabel(`Uploading ${i + 1}/${files.length}: ${f.name}`);
-        const path = `${user.user.id}/${project.id}/${Date.now()}-${f.name}`;
+        const path = `${user.user.id}/${project.id}/${Date.now()}-${safeStorageFileName(f.name)}`;
         const { error: upErr } = await supabase.storage.from("project-files").upload(path, f, {
           contentType: getSupportedFileType(f.name),
         });

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import {
   getSupportedFileType,
   MAX_FILES_PER_BATCH,
+  safeStorageFileName,
   validateProjectFile,
 } from "@/lib/file-validation";
 
@@ -59,7 +60,7 @@ function FilesPage() {
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) throw new Error("Not signed in");
       for (const f of incoming) {
-        const path = `${user.user.id}/${id}/${Date.now()}-${f.name}`;
+        const path = `${user.user.id}/${id}/${Date.now()}-${safeStorageFileName(f.name)}`;
         const { error } = await supabase.storage.from("project-files").upload(path, f, {
           contentType: getSupportedFileType(f.name),
         });

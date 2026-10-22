@@ -68,6 +68,19 @@ export const analyzeProject = createServerFn({ method: "POST" })
     if (claimError) throw claimError;
     if (!claimed) throw new Error("Analysis has already started or completed for this project.");
 
+    const { error: quotaError } = await supabase.rpc("consume_ai_credit");
+    if (quotaError) {
+      await supabase
+        .from("projects")
+        .update({ generation_status: "pending" })
+        .eq("id", project.id)
+        .eq("generation_status", "analyzing");
+      if (quotaError.message.includes("Monthly AI limit reached")) {
+        throw new Error("وصلت إلى الحد الشهري لاستخدام الذكاء الاصطناعي في خطتك.");
+      }
+      throw quotaError;
+    }
+
     try {
       const docExcerpts = (
         (project.project_files as Array<{ name: string; parsed_text: string | null }>) ?? []

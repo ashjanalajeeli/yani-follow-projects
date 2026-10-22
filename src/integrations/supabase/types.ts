@@ -192,6 +192,140 @@ export type Database = {
           },
         ]
       }
+      ai_usage: {
+        Row: { user_id: string; usage_month: string; used_count: number };
+        Insert: { user_id: string; usage_month: string; used_count?: number };
+        Update: { user_id?: string; usage_month?: string; used_count?: number };
+        Relationships: [];
+      };
+      payment_methods: {
+        Row: {
+          id: string;
+          name: string;
+          recipient_name: string;
+          account_reference: string;
+          currency: string;
+          instructions: string;
+          active: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          recipient_name?: string;
+          account_reference?: string;
+          currency?: string;
+          instructions?: string;
+          active?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          recipient_name?: string;
+          account_reference?: string;
+          currency?: string;
+          instructions?: string;
+          active?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      payment_requests: {
+        Row: {
+          id: string;
+          user_id: string;
+          contact_email: string;
+          plan: string;
+          billing_period: string;
+          payment_method_id: string;
+          amount_usd_cents: number;
+          status: string;
+          receipt_path: string | null;
+          user_note: string;
+          admin_note: string;
+          reviewed_by: string | null;
+          reviewed_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          contact_email?: string;
+          plan: string;
+          billing_period: string;
+          payment_method_id: string;
+          amount_usd_cents: number;
+          status?: string;
+          receipt_path?: string | null;
+          user_note?: string;
+          admin_note?: string;
+          reviewed_by?: string | null;
+          reviewed_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          contact_email?: string;
+          plan?: string;
+          billing_period?: string;
+          payment_method_id?: string;
+          amount_usd_cents?: number;
+          status?: string;
+          receipt_path?: string | null;
+          user_note?: string;
+          admin_note?: string;
+          reviewed_by?: string | null;
+          reviewed_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "payment_requests_payment_method_id_fkey";
+            columns: ["payment_method_id"];
+            isOneToOne: false;
+            referencedRelation: "payment_methods";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      user_subscriptions: {
+        Row: {
+          user_id: string;
+          plan: string;
+          billing_period: string | null;
+          status: string;
+          starts_at: string | null;
+          ends_at: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          plan?: string;
+          billing_period?: string | null;
+          status?: string;
+          starts_at?: string | null;
+          ends_at?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          plan?: string;
+          billing_period?: string | null;
+          status?: string;
+          starts_at?: string | null;
+          ends_at?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       projects: {
         Row: {
           analysis: Json | null
@@ -505,6 +639,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      attach_payment_receipt: {
+        Args: { _request_id: string; _receipt_path: string };
+        Returns: undefined;
+      };
+      bootstrap_subscription_admin: {
+        Args: { _user_id: string };
+        Returns: undefined;
+      };
+      cancel_manual_payment_request: {
+        Args: { _request_id: string };
+        Returns: undefined;
+      };
+      consume_ai_credit: {
+        Args: Record<PropertyKey, never>;
+        Returns: { used_count: number; monthly_limit: number; remaining: number }[];
+      };
+      create_manual_payment_request: {
+        Args: {
+          _plan: string;
+          _billing_period: string;
+          _payment_method_id: string;
+          _user_note?: string;
+        };
+        Returns: string;
+      };
+      is_subscription_admin: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
+      review_manual_payment_request: {
+        Args: { _request_id: string; _approve: boolean; _admin_note?: string };
+        Returns: undefined;
+      };
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

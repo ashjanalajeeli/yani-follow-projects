@@ -39,7 +39,7 @@ export const parseAndAttach = createServerFn({ method: "POST" })
       .download(data.storagePath);
     if (downloadError || !file) throw downloadError ?? new Error("Download failed");
     if (file.size === 0 || file.size > MAX_PROJECT_FILE_SIZE_BYTES || file.size !== data.size) {
-      throw new Error("File size is invalid or exceeds the 10 MB limit");
+      throw new Error("حجم الملف غير صحيح أو يتجاوز الحد المسموح في خطتك.");
     }
 
     const buffer = await file.arrayBuffer();
