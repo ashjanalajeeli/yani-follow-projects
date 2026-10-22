@@ -1,26 +1,35 @@
 import type { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import {
-  LayoutDashboard,
-  FolderKanban,
-  Plus,
-  Settings,
-  Sparkles,
-  LogOut,
-} from "lucide-react";
+import { LayoutDashboard, FolderKanban, Plus, Settings, Sparkles, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/projects", label: "Projects", icon: FolderKanban },
+  { to: "/billing", label: "الاشتراكات", icon: Sparkles },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { data: isAdmin } = useQuery({
+    queryKey: ["admin-nav"],
+    queryFn: async () => {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth.user) return false;
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", auth.user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      return Boolean(data);
+    },
+  });
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -46,7 +55,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
 
         <nav className="flex-1 space-y-0.5 px-2">
-          {NAV.map((n) => {
+          {[
+            ...NAV,
+            ...(isAdmin ? [{ to: "/admin" as const, label: "إدارة الدفع", icon: Settings }] : []),
+          ].map((n) => {
             const active =
               location.pathname === n.to ||
               (n.to !== "/dashboard" && location.pathname.startsWith(n.to));
@@ -68,7 +80,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="border-t border-sidebar-border p-3">
-          <Button variant="ghost" size="sm" className="w-full justify-start gap-2" onClick={signOut}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start gap-2"
+            onClick={signOut}
+          >
             <LogOut className="size-4" /> Sign out
           </Button>
         </div>

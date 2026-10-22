@@ -11,14 +11,26 @@ import { toast } from "sonner";
 import { Upload, Sparkles, X, FileText, Loader2 } from "lucide-react";
 import { parseAndAttach } from "@/lib/parse-document.functions";
 import { analyzeProject } from "@/lib/analyze-project.functions";
+import {
+  getSupportedFileType,
+  MAX_FILES_PER_BATCH,
+  safeStorageFileName,
+  validateProjectFile,
+} from "@/lib/file-validation";
 
 export const Route = createFileRoute("/_authenticated/projects/new")({
   head: () => ({
     meta: [
       { title: "New project — Yani" },
-      { name: "description", content: "Describe an idea or upload a brief and get a full AI roadmap in minutes." },
+      {
+        name: "description",
+        content: "Describe an idea or upload a brief and get a full AI roadmap in minutes.",
+      },
       { property: "og:title", content: "New project — Yani" },
-      { property: "og:description", content: "Describe an idea or upload a brief and get a full AI roadmap in minutes." },
+      {
+        property: "og:description",
+        content: "Describe an idea or upload a brief and get a full AI roadmap in minutes.",
+      },
       { property: "og:url", content: "https://yani-follow-projects.yani.app/projects/new" },
     ],
   }),
@@ -38,7 +50,16 @@ function NewProject() {
 
   function addFiles(list: FileList | null) {
     if (!list) return;
-    setFiles((prev) => [...prev, ...Array.from(list)]);
+    const incoming = Array.from(list);
+    const invalid = incoming.map((file) => validateProjectFile(file)).find(Boolean);
+    if (invalid) return toast.error(invalid);
+    setFiles((prev) => {
+      if (prev.length + incoming.length > MAX_FILES_PER_BATCH) {
+        toast.error(`يمكن رفع ${MAX_FILES_PER_BATCH} ملفات كحد أقصى لكل مشروع.`);
+        return prev;
+      }
+      return [...prev, ...incoming];
+    });
   }
 
   async function submit(e: React.FormEvent) {
@@ -68,8 +89,10 @@ function NewProject() {
       // Upload + parse each file
       for (const [i, f] of files.entries()) {
         setBusyLabel(`Uploading ${i + 1}/${files.length}: ${f.name}`);
-        const path = `${user.user.id}/${project.id}/${Date.now()}-${f.name}`;
-        const { error: upErr } = await supabase.storage.from("project-files").upload(path, f);
+        const path = `${user.user.id}/${project.id}/${Date.now()}-${safeStorageFileName(f.name)}`;
+        const { error: upErr } = await supabase.storage.from("project-files").upload(path, f, {
+          contentType: getSupportedFileType(f.name),
+        });
         if (upErr) throw upErr;
 
         setBusyLabel(`Reading ${f.name}…`);
@@ -100,18 +123,31 @@ function NewProject() {
     <div className="mx-auto max-w-3xl p-6 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold">New project</h1>
-        <p className="text-sm text-muted-foreground">Give us an idea or upload a brief — AI does the rest.</p>
+        <p className="text-sm text-muted-foreground">
+          Give us an idea or upload a brief — AI does the rest.
+        </p>
       </div>
 
       <form onSubmit={submit} className="space-y-6">
         <Card className="space-y-4 p-6">
           <div>
             <Label htmlFor="name">Project name</Label>
-            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme CRM redesign" required />
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Acme CRM redesign"
+              required
+            />
           </div>
           <div>
             <Label htmlFor="desc">Short description</Label>
-            <Input id="desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="One line for your list." />
+            <Input
+              id="desc"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="One line for your list."
+            />
           </div>
           <div>
             <Label htmlFor="idea">The idea / brief</Label>
@@ -144,10 +180,17 @@ function NewProject() {
           {files.length > 0 && (
             <ul className="mt-3 space-y-1.5">
               {files.map((f, i) => (
-                <li key={i} className="flex items-center gap-2 rounded-md bg-accent/40 px-3 py-2 text-sm">
+                <li
+                  key={i}
+                  className="flex items-center gap-2 rounded-md bg-accent/40 px-3 py-2 text-sm"
+                >
                   <FileText className="size-4 text-muted-foreground" />
                   <span className="truncate">{f.name}</span>
-                  <button type="button" className="ml-auto text-muted-foreground hover:text-foreground" onClick={() => setFiles(files.filter((_, j) => j !== i))}>
+                  <button
+                    type="button"
+                    className="ml-auto text-muted-foreground hover:text-foreground"
+                    onClick={() => setFiles(files.filter((_, j) => j !== i))}
+                  >
                     <X className="size-4" />
                   </button>
                 </li>
@@ -157,7 +200,12 @@ function NewProject() {
         </Card>
 
         <div className="flex items-center justify-end gap-2">
-          <Button type="button" variant="ghost" onClick={() => navigate({ to: "/projects" })} disabled={busy}>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => navigate({ to: "/projects" })}
+            disabled={busy}
+          >
             Cancel
           </Button>
           <Button type="submit" disabled={busy} className="gap-2">
