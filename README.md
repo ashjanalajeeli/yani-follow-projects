@@ -626,3 +626,22 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+=========================
+
+TESTING
+
+=========================
+
+npm run typecheck   # TypeScript
+npm test            # unit tests (document parser, file validation, input limits)
+npm run test:db     # applies every migration to a throwaway PostgreSQL and runs the
+                    # security suite in supabase/tests/security_test.sql
+
+test:db needs DATABASE_URL pointing at a disposable PostgreSQL 16 server, e.g.
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres npm run test:db
+It drops and recreates a database named yani_security_test. Never point it at production.
+
+All of these run in GitHub Actions on every pull request (.github/workflows/ci.yml).
+When you add a migration that touches RLS, policies or SECURITY DEFINER functions,
+add allow/deny cases for it to supabase/tests/security_test.sql.
