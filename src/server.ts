@@ -44,18 +44,75 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+// Origins allowed to embed the app (the Yani editor preview). Everything else is blocked.
+const FRAME_ANCESTORS =
+  "'self' https://yani.app https://*.yani.app https://*.yani.dev https://gptengineer.app https://*.gptengineer.app";
+
+function supabaseOrigins(): string {
+  const url = process.env.SUPABASE_URL;
+  try {
+    if (url) {
+      const { host } = new URL(url);
+      return `https://${host} wss://${host}`;
+    }
+  } catch {
+    /* fall through */
+  }
+  return "https://*.supabase.co wss://*.supabase.co";
+}
+
+function contentSecurityPolicy(): string {
+  return [
+    "default-src 'self'",
+    // TanStack Start streams inline hydration scripts; external scripts stay blocked.
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' data: https://fonts.gstatic.com",
+    "img-src 'self' data: blob: https:",
+    `connect-src 'self' ${supabaseOrigins()}`,
+    "frame-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    `frame-ancestors ${FRAME_ANCESTORS}`,
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
+
+function withSecurityHeaders(response: Response): Response {
+  const headers = new Headers(response.headers);
+  const set = (name: string, value: string) => {
+    if (!headers.has(name)) headers.set(name, value);
+  };
+  if ((headers.get("content-type") ?? "").includes("text/html")) {
+    set("Content-Security-Policy", contentSecurityPolicy());
+  }
+  set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  set("X-Content-Type-Options", "nosniff");
+  set("Referrer-Policy", "strict-origin-when-cross-origin");
+  set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()");
+  set("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return withSecurityHeaders(await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
+      return withSecurityHeaders(
+        new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+      );
     }
   },
 };

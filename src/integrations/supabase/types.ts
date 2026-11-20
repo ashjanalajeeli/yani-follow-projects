@@ -639,6 +639,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      my_file_size_limit: { Args: Record<PropertyKey, never>; Returns: number };
       attach_payment_receipt: {
         Args: { _request_id: string; _receipt_path: string };
         Returns: undefined;

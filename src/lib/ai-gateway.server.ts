@@ -2,6 +2,7 @@
 // Uses raw fetch to /v1/chat/completions for simplicity and reliability.
 
 const BASE = "https://ai.gateway.lovable.dev/v1";
+const GATEWAY_TIMEOUT_MS = 90_000;
 
 export type ChatMessage = {
   role: "system" | "user" | "assistant";
@@ -30,20 +31,29 @@ export async function callGateway(
   }
   if (opts.temperature !== undefined) body.temperature = opts.temperature;
 
-  const res = await fetch(`${BASE}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Lovable-API-Key": key,
-    },
-    body: JSON.stringify(body),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Lovable-API-Key": key,
+      },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(GATEWAY_TIMEOUT_MS),
+    });
+  } catch (err) {
+    console.error("[ai-gateway] request failed", err);
+    throw new Error("تعذر الاتصال بخدمة الذكاء الاصطناعي. حاول مرة أخرى.");
+  }
 
   if (!res.ok) {
+    // Log upstream details server-side only; never echo them to the client.
     const text = await res.text().catch(() => "");
+    console.error(`[ai-gateway] ${res.status}: ${text.slice(0, 1000)}`);
     if (res.status === 429) throw new Error("AI rate limit reached — try again shortly.");
-    if (res.status === 402) throw new Error("AI credits exhausted — add credits in Lovable Cloud.");
-    throw new Error(`AI gateway error (${res.status}): ${text.slice(0, 400)}`);
+    if (res.status === 402) throw new Error("خدمة الذكاء الاصطناعي غير متاحة مؤقتًا.");
+    throw new Error("حدث خطأ في خدمة الذكاء الاصطناعي. حاول مرة أخرى.");
   }
 
   const json = (await res.json()) as {

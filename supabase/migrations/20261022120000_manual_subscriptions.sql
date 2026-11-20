@@ -47,10 +47,6 @@ ALTER TABLE public.payment_methods ENABLE ROW LEVEL SECURITY;
 GRANT SELECT ON public.payment_methods TO authenticated;
 GRANT INSERT, UPDATE, DELETE ON public.payment_methods TO authenticated;
 GRANT ALL ON public.payment_methods TO service_role;
-CREATE POLICY "users read active payment methods" ON public.payment_methods FOR SELECT TO authenticated
-  USING (active OR public.is_subscription_admin() OR EXISTS (
-    SELECT 1 FROM public.payment_requests r WHERE r.payment_method_id = payment_methods.id AND r.user_id = auth.uid()
-  ));
 CREATE POLICY "admins manage payment methods" ON public.payment_methods FOR ALL TO authenticated
   USING (public.is_subscription_admin()) WITH CHECK (public.is_subscription_admin());
 
@@ -92,6 +88,11 @@ GRANT SELECT ON public.payment_requests TO authenticated;
 GRANT ALL ON public.payment_requests TO service_role;
 CREATE POLICY "users read own payment requests" ON public.payment_requests FOR SELECT TO authenticated
   USING (auth.uid() = user_id OR public.is_subscription_admin());
+-- Defined after payment_requests exists (it is referenced in the USING clause).
+CREATE POLICY "users read active payment methods" ON public.payment_methods FOR SELECT TO authenticated
+  USING (active OR public.is_subscription_admin() OR EXISTS (
+    SELECT 1 FROM public.payment_requests r WHERE r.payment_method_id = payment_methods.id AND r.user_id = auth.uid()
+  ));
 
 CREATE TABLE public.ai_usage (
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
