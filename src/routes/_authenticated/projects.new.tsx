@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Upload, Sparkles, X, FileText, Loader2 } from "lucide-react";
 import { parseAndAttach } from "@/lib/parse-document.functions";
 import { analyzeProject } from "@/lib/analyze-project.functions";
+import { LIMITS } from "@/lib/input-limits";
 import {
   getSupportedFileType,
   MAX_FILES_PER_BATCH,
@@ -65,6 +66,12 @@ function NewProject() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim()) return toast.error("Name is required");
+    if (
+      name.length > LIMITS.projectName ||
+      description.length > LIMITS.projectDescription ||
+      idea.length > LIMITS.ideaText
+    )
+      return toast.error(`النص طويل جدًا (الحد الأقصى للفكرة ${LIMITS.ideaText} حرف).`);
     if (!idea.trim() && files.length === 0) return toast.error("Add an idea or upload a document");
 
     setBusy(true);
@@ -136,6 +143,7 @@ function NewProject() {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              maxLength={LIMITS.projectName}
               placeholder="Acme CRM redesign"
               required
             />
@@ -146,6 +154,7 @@ function NewProject() {
               id="desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              maxLength={LIMITS.projectDescription}
               placeholder="One line for your list."
             />
           </div>
@@ -155,6 +164,7 @@ function NewProject() {
               id="idea"
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
+              maxLength={LIMITS.ideaText}
               rows={7}
               placeholder="Describe what you're building. Who is it for? Key features? Constraints? The more detail, the better the roadmap."
             />

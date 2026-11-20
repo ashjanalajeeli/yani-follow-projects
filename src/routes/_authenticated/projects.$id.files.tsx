@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
@@ -11,6 +12,7 @@ import {
   safeStorageFileName,
   validateProjectFile,
 } from "@/lib/file-validation";
+import { parseAndAttach } from "@/lib/parse-document.functions";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/files")({
   head: ({ params }) => ({
@@ -37,6 +39,7 @@ export const Route = createFileRoute("/_authenticated/projects/$id/files")({
 function FilesPage() {
   const { id } = Route.useParams();
   const qc = useQueryClient();
+  const parseFn = useServerFn(parseAndAttach);
 
   const { data: files = [] } = useQuery({
     queryKey: ["project-files", id],
@@ -65,12 +68,15 @@ function FilesPage() {
           contentType: getSupportedFileType(f.name),
         });
         if (error) throw error;
-        await supabase.from("project_files").insert({
-          project_id: id,
-          name: f.name,
-          storage_path: path,
-          mime: getSupportedFileType(f.name),
-          size: f.size,
+        // The server validates size/type, extracts the text and creates the row.
+        await parseFn({
+          data: {
+            projectId: id,
+            storagePath: path,
+            name: f.name,
+            mime: f.type || "application/octet-stream",
+            size: f.size,
+          },
         });
       }
     },
