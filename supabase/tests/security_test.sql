@@ -158,6 +158,36 @@ SELECT pg_temp.check('consume AI credits up to the free limit (3)', 'allow', :u1
 SELECT pg_temp.check('4th AI credit on free plan', 'deny', :u1,
   $q$SELECT consume_ai_credit()$q$, 'Monthly AI limit reached');
 
+-- ---------------------------------------------------------------- pass 3
+INSERT INTO notifications(user_id, type, title) VALUES (:u1, 'info', 'original');
+SELECT pg_temp.check('mark a notification read (column grant)', 'allow', :u1,
+  $q$DO $d$ BEGIN UPDATE notifications SET read = true; IF NOT FOUND THEN RAISE EXCEPTION 'nothing updated'; END IF; END $d$$q$);
+SELECT pg_temp.check('rewrite notification text', 'deny', :u1,
+  $q$UPDATE notifications SET title = 'fake', body = 'fake'$q$, 'permission denied');
+SELECT pg_temp.check('progress above 100', 'deny', :u1,
+  format($q$UPDATE projects SET progress = 150 WHERE id = %L$q$, :p2), 'projects_progress_range');
+SELECT pg_temp.check('read app_settings', 'deny', :u1,
+  $q$SELECT * FROM app_settings$q$, 'permission denied');
+SELECT pg_temp.check('tamper with rate_limits', 'deny', :u1,
+  format($q$INSERT INTO rate_limits(user_id, bucket, window_start, hits) VALUES (%L, 'parse_document', now(), -100)$q$, :u1), 'permission denied');
+UPDATE app_settings SET value = '3' WHERE key = 'parse_document_per_hour';
+SELECT pg_temp.check('parse_document rate limit: 3 per hour allowed', 'allow', :u1,
+  $q$SELECT consume_rate_limit('parse_document'); SELECT consume_rate_limit('parse_document'); SELECT consume_rate_limit('parse_document')$q$);
+SELECT pg_temp.check('parse_document rate limit: 4th in the hour', 'deny', :u1,
+  $q$SELECT consume_rate_limit('parse_document')$q$, 'Rate limit exceeded');
+SELECT pg_temp.check('unknown rate limit bucket', 'deny', :u1,
+  $q$SELECT consume_rate_limit('anything')$q$, 'Unknown rate limit bucket');
+-- user 1 used 3 free AI runs today above; cap the whole free tier at 3 per day.
+UPDATE app_settings SET value = '3' WHERE key = 'free_ai_runs_per_day';
+SELECT pg_temp.check('free-tier daily AI cap blocks a new free user', 'deny', :u2,
+  $q$SELECT consume_ai_credit()$q$, 'Free AI capacity reached');
+SELECT pg_temp.check('blocked run does not consume the user''s monthly credit', 'allow', :u2,
+  $q$DO $d$ BEGIN IF EXISTS (SELECT 1 FROM ai_usage WHERE used_count > 0) THEN RAISE EXCEPTION 'credit consumed'; END IF; END $d$$q$);
+SELECT pg_temp.check('delete a project that still has stored files', 'deny', :u1,
+  format($q$DELETE FROM projects WHERE id = %L$q$, :p2), 'Delete the project files');
+SELECT pg_temp.check('delete a project without files', 'allow', :u1,
+  format($q$DO $d$ BEGIN DELETE FROM projects WHERE id = %L; IF NOT FOUND THEN RAISE EXCEPTION 'not deleted'; END IF; END $d$$q$, :p1));
+
 -- ---------------------------------------------------------------- report
 \o
 \set QUIET off

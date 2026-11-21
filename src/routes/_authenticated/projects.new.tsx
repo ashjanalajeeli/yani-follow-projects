@@ -17,6 +17,7 @@ import {
   MAX_FILES_PER_BATCH,
   safeStorageFileName,
   validateProjectFile,
+  uploadErrorMessage,
 } from "@/lib/file-validation";
 
 export const Route = createFileRoute("/_authenticated/projects/new")({
@@ -100,7 +101,7 @@ function NewProject() {
         const { error: upErr } = await supabase.storage.from("project-files").upload(path, f, {
           contentType: getSupportedFileType(f.name),
         });
-        if (upErr) throw upErr;
+        if (upErr) throw new Error(uploadErrorMessage(upErr));
 
         setBusyLabel(`Reading ${f.name}…`);
         await parseFn({

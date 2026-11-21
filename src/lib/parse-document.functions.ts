@@ -52,6 +52,18 @@ export const parseAndAttach = createServerFn({ method: "POST" })
       .maybeSingle();
     if (existing) return { ok: true, chars: 0 };
 
+    // Parsing is CPU/memory heavy: cap it per user per hour (see consume_rate_limit).
+    const { error: rateError } = await supabase.rpc("consume_rate_limit", {
+      _bucket: "parse_document",
+    });
+    if (rateError) {
+      if (rateError.message.includes("Rate limit exceeded")) {
+        throw new Error("رفعتَ ملفات كثيرة خلال ساعة. حاول مرة أخرى لاحقًا.");
+      }
+      console.error("[parseAndAttach] consume_rate_limit", rateError);
+      throw new Error("تعذر معالجة الملف الآن.");
+    }
+
     const { data: planLimit, error: limitError } = await supabase.rpc("my_file_size_limit");
     if (limitError || typeof planLimit !== "number") {
       console.error("[parseAndAttach] my_file_size_limit", limitError);

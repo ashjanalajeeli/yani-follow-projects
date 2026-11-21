@@ -10,6 +10,7 @@ import {
   getSupportedFileType,
   MAX_FILES_PER_BATCH,
   safeStorageFileName,
+  uploadErrorMessage,
   validateProjectFile,
 } from "@/lib/file-validation";
 import { parseAndAttach } from "@/lib/parse-document.functions";
@@ -67,7 +68,7 @@ function FilesPage() {
         const { error } = await supabase.storage.from("project-files").upload(path, f, {
           contentType: getSupportedFileType(f.name),
         });
-        if (error) throw error;
+        if (error) throw new Error(uploadErrorMessage(error));
         // The server validates size/type, extracts the text and creates the row.
         await parseFn({
           data: {
