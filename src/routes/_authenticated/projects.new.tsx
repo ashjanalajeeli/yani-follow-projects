@@ -121,7 +121,8 @@ function NewProject() {
       toast.success("Roadmap ready!");
       navigate({ to: "/projects/$id", params: { id: project.id } });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to create project");
+      console.error("[newProject]", err);
+      toast.error(projectErrorMessage(err));
       setBusy(false);
       setBusyLabel("");
     }
@@ -227,4 +228,15 @@ function NewProject() {
       </form>
     </div>
   );
+}
+
+// Friendly messages for known database errors; never show raw Postgres text.
+function projectErrorMessage(err: unknown): string {
+  const message = err instanceof Error ? err.message : String(err ?? "");
+  if (message.includes("Active project limit reached"))
+    return "وصلت إلى الحد الأقصى للمشاريع النشطة في خطتك. أرشِف مشروعًا أو رقِّ خطتك.";
+  if (message.includes("Total project limit reached"))
+    return "وصلت إلى الحد الأقصى لإجمالي المشاريع في خطتك (بما فيها المؤرشفة).";
+  if (/[\u0600-\u06FF]/.test(message)) return message; // already a friendly app message
+  return "تعذر إنشاء المشروع. حاول مرة أخرى.";
 }

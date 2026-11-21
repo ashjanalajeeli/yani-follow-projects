@@ -188,6 +188,27 @@ SELECT pg_temp.check('delete a project that still has stored files', 'deny', :u1
 SELECT pg_temp.check('delete a project without files', 'allow', :u1,
   format($q$DO $d$ BEGIN DELETE FROM projects WHERE id = %L; IF NOT FOUND THEN RAISE EXCEPTION 'not deleted'; END IF; END $d$$q$, :p1));
 
+-- ---------------------------------------------------------------- pass 4: resource caps
+-- user 1 now owns exactly one project (p2); the free plan allows 10 in total, archived included.
+SELECT pg_temp.check('archived projects up to the free total (10)', 'allow', :u1,
+  format($q$INSERT INTO projects(owner_id, name, status) SELECT %L, 'a' || g, 'archived' FROM generate_series(1, 9) g$q$, :u1));
+SELECT pg_temp.check('11th project (archived) on free plan', 'deny', :u1,
+  format($q$INSERT INTO projects(owner_id, name, status) VALUES (%L, 'a11', 'archived')$q$, :u1), 'Total project limit');
+SELECT pg_temp.check('tasks up to 500 per project', 'allow', :u1,
+  format($q$INSERT INTO tasks(project_id, title) SELECT %L, 't' || g FROM generate_series(1, 499) g$q$, :p2));
+SELECT pg_temp.check('501st task in a project', 'deny', :u1,
+  format($q$INSERT INTO tasks(project_id, title) VALUES (%L, 'one too many')$q$, :p2), 'Row limit reached for tasks');
+SELECT pg_temp.check('subtasks up to 50 per task', 'allow', :u1,
+  $q$INSERT INTO subtasks(task_id, title) SELECT 'dddddddd-0000-4000-8000-000000000001', 's' || g FROM generate_series(1, 50) g$q$);
+SELECT pg_temp.check('51st subtask', 'deny', :u1,
+  $q$INSERT INTO subtasks(task_id, title) VALUES ('dddddddd-0000-4000-8000-000000000001', 'x')$q$, 'Row limit reached for subtasks');
+SELECT pg_temp.check('21st tool on a task', 'deny', :u1,
+  $q$INSERT INTO task_tools(task_id, tool_name, url) SELECT 'dddddddd-0000-4000-8000-000000000001', 'x', 'https://a.dev' FROM generate_series(1, 20)$q$, 'Row limit reached for task_tools');
+SELECT pg_temp.check('101st checklist item on a stage', 'deny', :u1,
+  $q$INSERT INTO checklists(stage_id, item) SELECT 'cccccccc-0000-4000-8000-000000000002', 'i' || g FROM generate_series(1, 101) g$q$, 'Row limit reached for checklists');
+SELECT pg_temp.check('a full AI-sized roadmap still fits (13 stages)', 'allow', :u1,
+  format($q$INSERT INTO stages(project_id, key, name) SELECT %L, 'k' || g, 's' || g FROM generate_series(1, 13) g$q$, :p2));
+
 -- ---------------------------------------------------------------- report
 \o
 \set QUIET off
