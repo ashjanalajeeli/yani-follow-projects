@@ -106,6 +106,11 @@ export const analyzeProject = createServerFn({ method: "POST" })
         .update({ generation_status: "pending" })
         .eq("id", project.id)
         .eq("generation_status", "analyzing");
+      if (quotaError.message.includes("Free AI capacity reached")) {
+        throw new Error(
+          "وصلت الخطة المجانية إلى سعتها اليومية للذكاء الاصطناعي. حاول غدًا أو رقِّ خطتك.",
+        );
+      }
       if (quotaError.message.includes("Monthly AI limit reached")) {
         throw new Error("وصلت إلى الحد الشهري لاستخدام الذكاء الاصطناعي في خطتك.");
       }

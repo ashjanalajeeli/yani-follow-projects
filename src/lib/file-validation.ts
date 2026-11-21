@@ -20,6 +20,16 @@ export function safeStorageFileName(name: string): string {
   return safe || "file";
 }
 
+// Storage rejects over-size or over-quota uploads with a generic RLS error.
+export function uploadErrorMessage(error: { message?: string } | null | undefined): string {
+  const message = (error?.message ?? "").toLowerCase();
+  if (message.includes("row-level security") || message.includes("maximum allowed size")) {
+    return "تم رفض الملف: إما أنه أكبر من حد خطتك أو أنك وصلت إلى الحد الأقصى لعدد الملفات في هذا المشروع.";
+  }
+  if (message.includes("mime")) return "نوع الملف غير مدعوم.";
+  return "تعذر رفع الملف. حاول مرة أخرى.";
+}
+
 export function validateProjectFile(file: Pick<File, "name" | "size">): string | undefined {
   if (!getSupportedFileType(file.name)) {
     return "الأنواع المسموحة: PDF وDOCX وTXT وMD.";

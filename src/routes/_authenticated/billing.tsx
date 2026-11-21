@@ -165,7 +165,8 @@ function BillingPage() {
       if (storagePath) await supabase.storage.from("subscription-receipts").remove([storagePath]);
       if (requestId)
         await supabase.rpc("cancel_manual_payment_request", { _request_id: requestId });
-      toast.error(error instanceof Error ? error.message : "تعذر إرسال طلب الدفع.");
+      console.error("[billing] submitPaymentRequest", error);
+      toast.error(billingErrorMessage(error));
     } finally {
       setBusy(false);
     }
@@ -428,4 +429,22 @@ function PaymentRequestCard({ request, methods }: { request: Request; methods: M
       </span>
     </Card>
   );
+}
+
+// Show users a known, friendly message; never raw database or storage errors.
+function billingErrorMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error ?? "");
+  const known: Array<[string, string]> = [
+    ["Payment request limit reached", "وصلت إلى الحد اليومي لطلبات الدفع. حاول غدًا."],
+    ["An active paid subscription already exists", "لديك اشتراك مدفوع نشط بالفعل."],
+    ["Payment method is unavailable", "وسيلة الدفع هذه غير متاحة حاليًا."],
+    ["Invalid plan or billing period", "الخطة أو مدة الاشتراك غير صحيحة."],
+    ["payment_requests_one_open_per_user", "لديك طلب دفع مفتوح بالفعل. ألغِه أو انتظر مراجعته."],
+    ["exceeded the maximum allowed size", "حجم الإيصال أكبر من المسموح."],
+    ["mime type", "نوع ملف الإيصال غير مدعوم."],
+  ];
+  for (const [needle, friendly] of known) {
+    if (message.toLowerCase().includes(needle.toLowerCase())) return friendly;
+  }
+  return "تعذر إرسال طلب الدفع. حاول مرة أخرى.";
 }

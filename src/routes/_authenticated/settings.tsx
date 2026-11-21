@@ -74,7 +74,7 @@ function SettingsPage() {
         </div>
         <div>
           <Label htmlFor="name">Name</Label>
-          <Input id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+          <Input id="name" value={fullName} maxLength={200} onChange={(e) => setFullName(e.target.value)} />
         </div>
         <Button onClick={saveProfile}>Save profile</Button>
       </Card>

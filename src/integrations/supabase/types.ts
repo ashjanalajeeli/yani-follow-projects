@@ -652,6 +652,7 @@ export type Database = {
         Args: { _request_id: string };
         Returns: undefined;
       };
+      consume_rate_limit: { Args: { _bucket: string }; Returns: undefined };
       consume_ai_credit: {
         Args: Record<PropertyKey, never>;
         Returns: { used_count: number; monthly_limit: number; remaining: number }[];
